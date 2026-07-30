@@ -38,20 +38,25 @@
 
 リーマンショックを含む10年とAI相場の10年、**両方で「何もしない」を上回りました。**
 
-### アプリ（iPhoneホーム画面用）
+### アプリ
 
-https://claude.ai/code/artifact/349e4977-3fff-4448-a7cd-fc383d0623f1
+## → **https://shigefumit.github.io/momentum-rebalance/**
 
-Safariで開いて「共有 → ホーム画面に追加」。保有銘柄はブラウザに保存され、
-毎月「売る／買う／継続」を計算して表示します。通信しないのでオフラインでも開けます。
+Safariで開いて「共有 → ホーム画面に追加」でアプリになります。ログイン不要。
+
+保有銘柄はブラウザ内（localStorage）にのみ保存され、サーバーには送られません。
+そのため**他の閲覧者にあなたの保有は見えません**。通信を一切行わないので
+オフラインでも開けます。
 
 ### 毎月の更新手順
 
 ```bash
 .venv/bin/python momentum.py --json app_data.json   # 最新の順位を計算
-.venv/bin/python build_app.py                       # app.html を再生成
-# → app.html を再公開（同じURLが更新される）
+.venv/bin/python build_app.py                       # app.html と docs/index.html を再生成
+git add -A && git commit -m "$(date +%Y-%m) の順位を更新" && git push
 ```
+
+プッシュから1〜2分でGitHub Pagesに反映されます。
 
 CLIだけで済ませる場合:
 
