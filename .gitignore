@@ -1,0 +1,10 @@
+# Python 環境
+.venv/
+__pycache__/
+*.pyc
+
+# 株価データのキャッシュ（再取得できるので不要）
+.cache/
+
+# 自分の保有銘柄。個人情報なので公開しない
+holdings.json

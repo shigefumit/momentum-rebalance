@@ -1,0 +1,9 @@
+# Phase 0 依存パッケージ
+# セットアップ:
+#   python3 -m venv .venv
+#   .venv/bin/python -m pip install -r requirements.txt
+pandas>=2.0
+numpy>=1.24
+yfinance>=0.2.50
+requests
+anthropic
