@@ -128,17 +128,25 @@ def make_momentum(n: int, months: int, regime: bool = False):
     これが「当時のテーマ株を自力で拾う」systematic版。2016年ならクラウド、
     2020年なら半導体、2022年ならエネルギー、2023年以降ならAIを、
     人間が判断せずに値動きだけで拾えたかを試す。
-    """
-    look = months * 21
 
+    測定区間は**カレンダー基準**（12ヶ月なら丸1年前の終値と比較）。
+    「営業日 × 21」で数えると誤差が出る。日米の営業日を1つの表にまとめると
+    日付が両市場の和集合になり、1年あたりの行数が252より多くなるため
+    （米国だけの営業日＋日本だけの営業日＋共通日）、252行遡っても
+    約11.6ヶ月しか戻らない。
+    """
     def f(exec_date, past, full, ctx):
-        if len(past) < look + 1:
+        if len(past) < 260:
             return {}
         if regime:
             spx = ctx["spx"].loc[:past.index[-1]]
             if len(spx) >= 200 and spx.iloc[-1] < spx.tail(200).mean():
                 return {}       # 弱気相場は全額現金
-        ret = past.iloc[-1] / past.iloc[-look] - 1.0
+        end_ts = past.index[-1]
+        pos = int(past.index.searchsorted(end_ts - pd.DateOffset(months=months)))
+        if pos >= len(past) - 5:
+            return {}
+        ret = past.iloc[-1] / past.iloc[pos] - 1.0
         ret = ret.dropna()
         # 直近1ヶ月が急騰した銘柄は反落しやすいので除外しない（素朴なモメンタムを見る）
         if ret.empty:

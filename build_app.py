@@ -253,11 +253,12 @@ TEMPLATE = """<title>モメンタム・リバランス</title>
     <p class="eyebrow">月次リバランス</p>
     <h1>上がっているものを、持つ。</h1>
     <p class="rule-line">
-      過去12ヶ月のリターン上位を等ウェイトで保有し、月に1度だけ入れ替える。
+      丸1年前の終値と比べて最も上がっていた銘柄を、月に1度だけ入れ替えて持つ。
       売買タイミングは判定しない — 検証で一貫して損だったため。
     </p>
     <p class="asof">
-      基準日 <span class="num" id="asof"></span> ／
+      測定区間 <span class="num" id="from"></span> 〜 <span class="num" id="asof"></span>
+      （この日の終値で判定し、翌営業日に売買）<br />
       対象 <span class="num" id="univ"></span> 銘柄 ／
       ドル円 <span class="num" id="fx"></span>
     </p>
@@ -321,15 +322,15 @@ TEMPLATE = """<title>モメンタム・リバランス</title>
     <h2>このルールの検証結果</h2>
     <p class="sub">配当込み・売買コスト0.2%・譲渡益税20.315% を反映した後の数字</p>
     <dl class="facts">
-      <div><dt>2006〜2015年（リーマンショックを含む）</dt><dd class="pos">+339%</dd></div>
-      <div><dt>　同期間に全銘柄を持ち続けた場合</dt><dd>+178%</dd></div>
-      <div><dt>2016〜2026年（AI相場）</dt><dd class="pos">+1,956%</dd></div>
+      <div><dt>2006〜2015年（リーマンショックを含む）</dt><dd class="pos">+460%</dd></div>
+      <div><dt>　同期間に全銘柄を持ち続けた場合</dt><dd>+174%</dd></div>
+      <div><dt>2016〜2026年（AI相場）</dt><dd class="pos">+1,951%</dd></div>
       <div><dt>　同期間に全銘柄を持ち続けた場合</dt><dd>+1,308%</dd></div>
-      <div><dt>最大の落ち込み</dt><dd class="neg">−58% / −42%</dd></div>
+      <div><dt>最大の落ち込み</dt><dd class="neg">−57% / −41%</dd></div>
     </dl>
     <div class="warn" style="margin-top:18px">
       <b>途中で資産が半分近くになります。</b>
-      増える道中で −58% の局面を通過しました。300万円が126万円に見える時期を
+      増える道中で −57% の局面を通過しました。300万円が129万円に見える時期を
       持ち続けられるかが、この戦略の成否をすべて決めます。
     </div>
   </section>
@@ -339,7 +340,7 @@ TEMPLATE = """<title>モメンタム・リバランス</title>
     <ul class="notes">
       <li><strong>月1回だけ開く。</strong>頻繁に見ても意味がなく、売買が増えて手数料と税金だけが増えます。</li>
       <li><strong>タイミングを足さない。</strong>「相場が悪いから今月は現金で」をやると、検証では
-          +1,956% が +636% に落ちました。後知恵で勝ち組を選んだ場合でも
+          +1,951% が +636% に落ちました。後知恵で勝ち組を選んだ場合でも
           +11,208% → +1,579% に落ちています。悪手だと分かっている操作です。</li>
       <li><strong>損切りはありません。</strong>下がった銘柄は順位が落ちて自動的に外れます。
           それが唯一の撤退ルールです。</li>
@@ -411,6 +412,7 @@ TEMPLATE = """<title>モメンタム・リバランス</title>
 
   function render() {
     el("asof").textContent = DATA.as_of;
+    el("from").textContent = DATA.lookback_from || "―";
     el("univ").textContent = DATA.ranking.length;
     el("fx").textContent = DATA.usdjpy.toFixed(2);
     el("gen").textContent = DATA.generated;

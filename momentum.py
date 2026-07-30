@@ -145,36 +145,57 @@ def save_holdings(symbols: list) -> None:
         ensure_ascii=False, indent=2))
 
 
-def compute(top_n: int, capital: float) -> dict:
+def compute(top_n: int, capital: float, as_of_str: str | None = None) -> dict:
     """順位付けと株数を計算する。
 
     2種類の株価を使い分ける:
       - 順位付け     配当込み・円換算のトータルリターン（検証と同じ基準にするため）
       - 株数の計算   実際の市場価格（配当調整後の価格では実際に買えない）
+
+    as_of_str を渡すとその日付時点で判定する。「2026年7月31日の終値までのデータで
+    ルールは何と言ったか」を後から再現できる。バックテストと同じ手順
+    （その日の終値で判定 → 翌営業日に売買）なので、検証結果と直接突き合わせられる。
+
+    「12ヶ月」は 252営業日（12 × 21）で測る。カレンダーの1年とは数日ずれるが、
+    検証と本番で同じ定義を使うことを優先している。
     """
     symbols = research.US + research.ETF + research.JP
     print(f"  データ取得中（{len(symbols)}銘柄）…")
     panel, _ = research.load_panel(symbols, quiet=True)
 
+    if as_of_str:
+        cut = pd.Timestamp(as_of_str)
+        panel = panel.loc[:cut]
+        if panel.empty:
+            raise RuntimeError(f"{as_of_str} 以前のデータがありません")
+
     as_of = panel.index[-1]
     if len(panel) < LOOKBACK_DAYS + 5:
         raise RuntimeError("データが不足しています")
 
-    # ---- 12ヶ月リターンで順位付け
+    # ---- 12ヶ月リターンで順位付け（カレンダー基準）
+    #
+    # 「営業日 × 21」で数えると誤差が出る。日米の営業日を1つの表にまとめると
+    # 日付が両市場の和集合になり、1年あたりの行数が252より多くなるため、
+    # 252行遡っても約11.6ヶ月しか戻らない。丸1年前の終値と比較する。
+    pos = int(panel.index.searchsorted(as_of - pd.DateOffset(months=LOOKBACK_MONTHS)))
+    if pos >= len(panel) - 5:
+        raise RuntimeError(f"{LOOKBACK_MONTHS}ヶ月分のデータがありません")
     now = panel.iloc[-1]
-    then = panel.iloc[-LOOKBACK_DAYS]
+    then = panel.iloc[pos]
+    lookback_from = panel.index[pos]
     ret = ((now / then) - 1.0).dropna().sort_values(ascending=False)
 
-    # 過去12ヶ月分のデータが実際にある銘柄だけを対象にする
+    # 測定開始時点で実際にデータがある銘柄だけを対象にする
     valid = [s for s in ret.index
-             if panel[s].loc[:panel.index[-LOOKBACK_DAYS]].dropna().size > 0]
+             if panel[s].loc[:lookback_from].dropna().size > 0]
     ret = ret.loc[valid]
 
     top = list(ret.head(top_n).index)
 
     # ---- 実際の市場価格を取る（株数計算用）
-    print("  現在値を取得中 …")
-    fx = fetcher.get_usdjpy()
+    print("  実勢価格を取得中 …")
+    fx = fetcher.get_usdjpy(as_of=as_of if as_of_str else None, period="max")
     rows = []
     per_pos = capital / top_n
     for rank, sym in enumerate(ret.index, 1):
@@ -189,7 +210,9 @@ def compute(top_n: int, capital: float) -> dict:
         if rank <= max(PRICE_DEPTH, top_n):
             market = "JP" if sym.endswith(".T") else "US"
             try:
-                px = fetcher.get_prices(sym, period="1mo")
+                px = fetcher.get_prices(sym, period="max" if as_of_str else "1mo")
+                if as_of_str:
+                    px = px.loc[:as_of]
                 price_local = float(px["Close"].iloc[-1])
             except Exception:
                 price_local = float("nan")
@@ -217,6 +240,7 @@ def compute(top_n: int, capital: float) -> dict:
     cur = held.get("symbols", [])
     return {
         "as_of": str(as_of.date()),
+        "lookback_from": str(lookback_from.date()),
         "generated": datetime.now().strftime("%Y-%m-%d %H:%M"),
         "capital": capital,
         "top_n": top_n,
@@ -238,8 +262,10 @@ def render(d: dict) -> None:
     print()
     print("═" * W)
     print(f"  モメンタム・リバランス判定")
-    print(f"  基準日 {d['as_of']}   ルール: 過去{d['lookback_months']}ヶ月リターン上位"
-          f"{d['top_n']}銘柄を等ウェイト")
+    print(f"  基準日 {d['as_of']}（この日の終値で判定 → 翌営業日に売買）")
+    print(f"  測定区間 {d.get('lookback_from', '?')} 〜 {d['as_of']}"
+          f"（カレンダーで{d['lookback_months']}ヶ月）")
+    print(f"  ルール: このリターン上位{d['top_n']}銘柄を等ウェイト")
     print("═" * W)
 
     print(f"\n  今月持つべき {d['top_n']} 銘柄")
@@ -344,6 +370,8 @@ def main() -> int:
     ap.add_argument("--capital", type=float, default=config.CAPITAL_JPY)
     ap.add_argument("--json", default=None, help="PWA用データの書き出し先")
     ap.add_argument("--set", nargs="*", default=None, help="現在の保有銘柄を登録")
+    ap.add_argument("--asof", default=None,
+                    help="この日付の終値まででの判定を再現する（例 2026-06-30）")
     args = ap.parse_args()
 
     if args.set is not None:
@@ -354,7 +382,7 @@ def main() -> int:
         return 0
 
     try:
-        d = compute(args.top, args.capital)
+        d = compute(args.top, args.capital, args.asof)
     except Exception as e:
         print(f"\n  [エラー] {type(e).__name__}: {e}\n")
         return 1
