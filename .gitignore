@@ -8,3 +8,6 @@ __pycache__/
 
 # 自分の保有銘柄。個人情報なので公開しない
 holdings.json
+
+# 自動実行で生成される通知本文
+report.md

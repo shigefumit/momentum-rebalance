@@ -11,6 +11,7 @@ yfinance は非公式スクレイピングでいつ壊れてもおかしくな�
 """
 from __future__ import annotations
 
+import os
 import time
 import warnings
 from datetime import datetime, timedelta
@@ -23,7 +24,11 @@ warnings.filterwarnings("ignore")
 
 CACHE_DIR = Path(__file__).parent / ".cache"
 CACHE_TTL_HOURS = 6
-FETCH_SLEEP_SEC = 1.0        # 銘柄間の待機。429回避
+
+# 銘柄間の待機。429（レート制限）回避。
+# GitHub Actions のようなデータセンターIPからは Yahoo に弾かれやすいため、
+# 環境変数で待機を長くできるようにしてある。
+FETCH_SLEEP_SEC = float(os.environ.get("FETCH_SLEEP_SEC", "1.0"))
 _last_fetch = 0.0
 
 
