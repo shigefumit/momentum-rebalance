@@ -63,11 +63,11 @@
   body {
     margin: 0; background: var(--paper); color: var(--ink);
     font-family: var(--body); line-height: 1.7;
-    -webkit-text-size-adjust: 100%;
-    font-feature-settings: "palt" 1;
+    -webkit-text-size-adjust: 100%; font-feature-settings: "palt" 1;
   }
   .wrap { max-width: var(--maxw); margin: 0 auto; padding: var(--pad); }
   .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .pos { color: var(--up); } .neg { color: var(--down); }
 
   /* ── ヘッダ ─────────────────────────────────────────────── */
   header { padding-block: clamp(20px, 6vw, 40px) 0; }
@@ -80,10 +80,7 @@
     font-size: clamp(1.7rem, 6.5vw, 2.5rem); line-height: 1.3;
     margin: 0; text-wrap: balance; letter-spacing: .01em;
   }
-  .rule-line {
-    margin: .9em 0 0; color: var(--ink-mid); font-size: .95rem;
-    max-width: 34em;
-  }
+  .rule-line { margin: .9em 0 0; color: var(--ink-mid); font-size: .95rem; max-width: 34em; }
   .asof { margin: 1.4em 0 0; font-size: .82rem; color: var(--ink-soft); }
 
   /* ── カード ─────────────────────────────────────────────── */
@@ -99,136 +96,141 @@
   }
   .sub { font-size: .82rem; color: var(--ink-soft); margin: 0 0 1.2em; }
 
-  /* ── 今月の指示 ─────────────────────────────────────────── */
-  .verdict { border-left: 3px solid var(--signal); }
-  .verdict.hold { border-left-color: var(--up); }
-  .action-h {
-    font-family: var(--display); font-size: clamp(1.25rem, 5vw, 1.6rem);
-    margin: 0 0 .5em; line-height: 1.35;
+  /* ── 資産の主役表示 ─────────────────────────────────────── */
+  .hero { border-left: 3px solid var(--signal); }
+  .total {
+    font-family: var(--mono); font-variant-numeric: tabular-nums;
+    font-size: clamp(2rem, 9vw, 3rem); font-weight: 600;
+    line-height: 1.1; margin: .2em 0 0; letter-spacing: -.02em;
   }
-  .moves { display: flex; flex-direction: column; gap: 14px; margin-top: 18px; }
-  .move-grp { display: flex; flex-direction: column; gap: 6px; }
-  .move-lbl {
-    font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
-    color: var(--ink-soft);
+  .total small { font-size: .42em; font-weight: 400; color: var(--ink-soft); margin-left: .3em; }
+  .pnl-line { margin: .5em 0 0; font-size: .95rem; }
+  .pnl-line .num { font-weight: 600; }
+  .split {
+    display: flex; flex-wrap: wrap; gap: 0 28px; margin: 1.4em 0 0;
+    padding-top: 1.2em; border-top: 1px solid var(--rule);
   }
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .chip {
-    display: inline-flex; align-items: baseline; gap: .5em;
-    border: 1px solid var(--rule); border-radius: 2px;
-    padding: .35em .6em; font-size: .88rem; background: var(--paper);
-  }
-  .chip.sell { border-color: var(--down); color: var(--down); }
-  .chip.buy  { border-color: var(--signal); color: var(--signal); }
-  .chip .t { font-family: var(--mono); font-weight: 600; }
-  .chip .q { font-size: .8em; color: var(--ink-soft); }
+  .split div { display: flex; flex-direction: column; gap: .1em; }
+  .split dt { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
+              color: var(--ink-soft); margin: 0; }
+  .split dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nums;
+              font-size: 1.05rem; }
 
-  /* ── 構成テーブル ───────────────────────────────────────── */
+  /* ── テーブル ───────────────────────────────────────────── */
   .tw { overflow-x: auto; margin-inline: calc(var(--pad) * -1); padding-inline: var(--pad); }
-  table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; }
   th {
-    text-align: left; font-weight: 500; font-size: .72rem;
+    text-align: left; font-weight: 500; font-size: .7rem;
     letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft);
-    border-bottom: 1px solid var(--rule); padding: 0 .6em .5em 0; white-space: nowrap;
+    border-bottom: 1px solid var(--rule); padding: 0 .55em .5em 0; white-space: nowrap;
   }
-  td { padding: .62em .6em .62em 0; border-bottom: 1px solid var(--rule); }
+  td { padding: .6em .55em .6em 0; border-bottom: 1px solid var(--rule); }
   th.r, td.r { text-align: right; padding-right: 0; }
   tr:last-child td { border-bottom: none; }
   .tick { font-family: var(--mono); font-weight: 600; }
   .nm { color: var(--ink-mid); font-size: .84em; }
-  .sec {
-    font-size: .7rem; color: var(--ink-soft); border: 1px solid var(--rule);
-    border-radius: 2px; padding: .1em .4em; white-space: nowrap;
-  }
+  .sec { font-size: .68rem; color: var(--ink-soft); border: 1px solid var(--rule);
+         border-radius: 2px; padding: .1em .4em; white-space: nowrap; }
   tfoot td { border-bottom: none; border-top: 2px solid var(--rule-hi);
              padding-top: .7em; font-weight: 600; }
-  .pos { color: var(--up); } .neg { color: var(--down); }
+
+  /* ── 発注指示 ───────────────────────────────────────────── */
+  .action-h {
+    font-family: var(--display); font-size: clamp(1.2rem, 5vw, 1.55rem);
+    margin: 0 0 .1em; line-height: 1.35;
+  }
+  .orders { display: flex; flex-direction: column; gap: 8px; margin: 18px 0 0; }
+  .order {
+    display: grid; grid-template-columns: 3.4em 1fr auto; gap: 0 .8em;
+    align-items: baseline; padding: .7em .7em; border-radius: 2px;
+    border: 1px solid var(--rule); background: var(--paper);
+  }
+  .order.buy  { border-color: var(--signal); }
+  .order.sell { border-color: var(--down); }
+  .order .verb {
+    font-size: .74rem; font-weight: 700; letter-spacing: .06em;
+    padding: .15em 0; text-align: center; border-radius: 2px;
+  }
+  .order.buy  .verb { color: var(--signal); background: var(--signal-bg); }
+  .order.sell .verb { color: var(--down); background: var(--warn-bg); }
+  .order.keep .verb { color: var(--ink-soft); }
+  .order .who b { font-family: var(--mono); font-size: .95rem; }
+  .order .who span { display: block; font-size: .76rem; color: var(--ink-soft); }
+  .order .qty { text-align: right; font-family: var(--mono);
+                font-variant-numeric: tabular-nums; }
+  .order .qty b { font-size: 1.02rem; }
+  .order .qty span { display: block; font-size: .76rem; color: var(--ink-soft); }
 
   /* ── 順位表と境界線（この戦略の中心装置）─────────────────── */
-  /* subgrid は Safari 16+ 限定なので使わず、各行を独立したグリッドにする。
-     見た目は同じで、古い端末でも崩れない。 */
   .lrow {
     display: grid; grid-template-columns: 2.2em 1fr auto; gap: 0 .6em;
     align-items: baseline; padding: .5em .55em; margin-inline: -.55em;
     border-bottom: 1px solid var(--rule);
   }
   .lrow.in { background: var(--signal-bg); }
+  .lrow.own { box-shadow: inset 3px 0 0 var(--up); }
   .lrow .rk { font-family: var(--mono); font-size: .82rem; color: var(--ink-soft); }
   .lrow.in .rk { color: var(--signal); font-weight: 700; }
-  .lrow .who { min-width: 0; }
   .lrow .who b { font-family: var(--mono); font-size: .92rem; }
   .lrow .who span { display: block; font-size: .78rem; color: var(--ink-soft); }
   .lrow .ret { font-family: var(--mono); font-variant-numeric: tabular-nums;
                font-size: .9rem; text-align: right; }
-  .cut {
-    display: flex; align-items: center; gap: .8em;
-    padding: .5em 0; border-bottom: 2px solid var(--signal);
-  }
-  .cut span {
-    font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
-    color: var(--signal); font-weight: 700; white-space: nowrap;
-  }
+  .cut { display: flex; align-items: center; gap: .8em; padding: .5em 0;
+         border-bottom: 2px solid var(--signal); }
+  .cut span { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
+              color: var(--signal); font-weight: 700; white-space: nowrap; }
   .cut i { flex: 1; height: 0; }
 
   /* ── 操作 ───────────────────────────────────────────────── */
   .ctl { display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-end; }
   .fld { display: flex; flex-direction: column; gap: .4em; }
-  .fld > label {
-    font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
-    color: var(--ink-soft);
-  }
+  .fld > label { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
+                 color: var(--ink-soft); }
   .seg { display: flex; border: 1px solid var(--rule); border-radius: 2px; overflow: hidden; }
-  .seg button {
-    font: inherit; font-size: .88rem; padding: .5em .9em; border: 0;
-    background: var(--surface); color: var(--ink-mid); cursor: pointer;
-    font-family: var(--mono);
-  }
-  /* 選択中は反転。--surface を文字色に使うことで両テーマでコントラストが保たれる */
+  .seg button { font: inherit; font-size: .88rem; padding: .5em .9em; border: 0;
+                background: var(--surface); color: var(--ink-mid); cursor: pointer;
+                font-family: var(--mono); }
   .seg button[aria-pressed="true"] { background: var(--signal); color: var(--surface); }
   input[type="number"] {
-    font: inherit; font-family: var(--mono); font-size: .95rem;
-    padding: .5em .6em; width: 11ch; color: var(--ink);
+    font: inherit; font-family: var(--mono); font-variant-numeric: tabular-nums;
+    font-size: .95rem; padding: .5em .6em; width: 12ch; color: var(--ink);
     background: var(--surface); border: 1px solid var(--rule); border-radius: 2px;
   }
-  button.act {
-    font: inherit; font-size: .92rem; padding: .7em 1.2em; cursor: pointer;
-    background: var(--ink); color: var(--paper);
-    border: 1px solid var(--ink); border-radius: 2px;
-  }
+  input.narrow { width: 8ch; }
+  button.act { font: inherit; font-size: .92rem; padding: .75em 1.3em; cursor: pointer;
+               background: var(--ink); color: var(--paper);
+               border: 1px solid var(--ink); border-radius: 2px; }
   button.act.ghost { background: transparent; color: var(--ink-mid); border-color: var(--rule); }
+  button.act[disabled] { opacity: .45; cursor: not-allowed; }
+  .btnrow { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
   button:focus-visible, input:focus-visible, summary:focus-visible {
     outline: 2px solid var(--signal); outline-offset: 2px;
   }
 
-  /* ── 警告 ───────────────────────────────────────────────── */
-  .warn {
-    background: var(--warn-bg); border: 1px solid var(--warn);
-    border-radius: 3px; padding: 1em var(--pad); margin-block: 14px;
-    font-size: .9rem; color: var(--ink);
-  }
+  /* ── 警告・注記 ─────────────────────────────────────────── */
+  .warn { background: var(--warn-bg); border: 1px solid var(--warn); border-radius: 3px;
+          padding: 1em var(--pad); margin-block: 14px; font-size: .9rem; color: var(--ink); }
   .warn b { color: var(--warn); }
   .facts { display: grid; gap: 0; margin: 0; }
-  .facts div {
-    display: flex; justify-content: space-between; gap: 1em;
-    padding: .55em 0; border-bottom: 1px solid var(--rule); font-size: .9rem;
-  }
+  .facts div { display: flex; justify-content: space-between; gap: 1em;
+               padding: .55em 0; border-bottom: 1px solid var(--rule); font-size: .9rem; }
   .facts div:last-child { border-bottom: none; }
   .facts dt { color: var(--ink-soft); margin: 0; }
   .facts dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nums; }
   ul.notes { margin: 0; padding-left: 1.3em; font-size: .9rem; color: var(--ink-mid); }
   ul.notes li { margin-block: .5em; }
   ul.notes strong { color: var(--ink); }
-  details { margin-top: 14px; }
+  details { margin-top: 16px; }
   summary { cursor: pointer; font-size: .88rem; color: var(--signal); }
-  footer {
-    margin-block: 40px 24px; padding-top: 20px; border-top: 1px solid var(--rule);
-    font-size: .78rem; color: var(--ink-soft);
-  }
-  .toast {
-    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(120%);
-    background: var(--ink); color: var(--paper); padding: .7em 1.3em;
-    border-radius: 2px; font-size: .88rem; transition: transform .25s ease; z-index: 9;
-  }
+  .edit-row { display: grid; grid-template-columns: 1fr auto; gap: .6em;
+              align-items: center; padding: .45em 0; border-bottom: 1px solid var(--rule); }
+  .edit-row span { font-family: var(--mono); font-size: .9rem; }
+  footer { margin-block: 40px 24px; padding-top: 20px; border-top: 1px solid var(--rule);
+           font-size: .78rem; color: var(--ink-soft); }
+  .toast { position: fixed; left: 50%; bottom: 24px;
+           transform: translateX(-50%) translateY(120%);
+           background: var(--ink); color: var(--paper); padding: .7em 1.3em;
+           border-radius: 2px; font-size: .88rem; transition: transform .25s ease; z-index: 9; }
   .toast.on { transform: translateX(-50%) translateY(0); }
   @media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
 </style>
@@ -247,65 +249,97 @@
     <p class="asof">
       測定区間 <span class="num" id="from"></span> 〜 <span class="num" id="asof"></span>
       （この日の終値で判定し、翌営業日に売買）<br />
-      対象 <span class="num" id="univ"></span> 銘柄 ／
-      ドル円 <span class="num" id="fx"></span>
+      対象 <span class="num" id="univ"></span> 銘柄 ／ ドル円 <span class="num" id="fx"></span>
     </p>
   </header>
 
-  <section class="card verdict" id="verdict">
-    <h2>今月の指示</h2>
-    <p class="sub" id="held-note"></p>
-    <p class="action-h" id="action"></p>
-    <div class="moves" id="moves"></div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px">
-      <button class="act" id="btn-apply">この構成に入れ替えた</button>
-      <button class="act ghost" id="btn-clear">保有を消す</button>
+  <!-- ══ 初回セットアップ ══ -->
+  <section class="card" id="setup" hidden>
+    <h2>いくらで始めますか</h2>
+    <p class="sub">この金額を基準に株数を計算します。あとから変更できます</p>
+    <div class="ctl">
+      <div class="fld">
+        <label for="init">投資する金額（円）</label>
+        <input type="number" id="init" min="100000" step="100000" value="3000000" />
+      </div>
+      <button class="act" id="btn-start">この金額で始める</button>
     </div>
   </section>
 
-  <section class="card">
-    <h2>保有すべき構成</h2>
-    <p class="sub" id="budget"></p>
-    <div class="tw">
+  <!-- ══ 現在の資産 ══ -->
+  <section class="card hero" id="hero" hidden>
+    <h2>現在の資産</h2>
+    <p class="sub" id="hero-sub"></p>
+    <p class="total"><span id="total"></span><small>円</small></p>
+    <p class="pnl-line" id="pnl"></p>
+    <dl class="split">
+      <div><dt>保有株の時価</dt><dd class="num" id="mv"></dd></div>
+      <div><dt>現金</dt><dd class="num" id="cash"></dd></div>
+      <div><dt>投資元本</dt><dd class="num" id="basis"></dd></div>
+    </dl>
+    <div class="tw" id="pos-wrap" hidden>
       <table>
         <thead>
           <tr>
-            <th>銘柄</th><th>セクター</th>
-            <th class="r">12ヶ月</th><th class="r">株数</th><th class="r">必要額</th>
+            <th>銘柄</th><th class="r">株数</th><th class="r">取得単価</th>
+            <th class="r">現在値</th><th class="r">評価額</th><th class="r">損益</th>
           </tr>
         </thead>
-        <tbody id="alloc"></tbody>
-        <tfoot id="alloc-foot"></tfoot>
+        <tbody id="positions"></tbody>
       </table>
     </div>
-    <div id="alerts"></div>
   </section>
 
-  <section class="card">
-    <h2>設定</h2>
-    <p class="sub">変更するとこの端末に保存されます</p>
-    <div class="ctl">
-      <div class="fld">
-        <label id="lbl-topn">保有銘柄数</label>
-        <div class="seg" role="group" aria-labelledby="lbl-topn" id="seg-topn"></div>
-      </div>
-      <div class="fld">
-        <label for="cap">投資資金（円）</label>
-        <input type="number" id="cap" min="100000" step="100000" />
-      </div>
+  <!-- ══ 今月の発注 ══ -->
+  <section class="card" id="rebalance" hidden>
+    <h2>今月の発注</h2>
+    <p class="sub" id="reb-sub"></p>
+    <p class="action-h" id="action"></p>
+    <div class="orders" id="orders"></div>
+    <div id="reb-alerts"></div>
+    <div class="btnrow">
+      <button class="act" id="btn-exec">この通り発注した</button>
+      <button class="act ghost" id="btn-reset">最初からやり直す</button>
     </div>
-  </section>
-
-  <section class="card">
-    <h2>順位表</h2>
-    <p class="sub">この線の上を持つ。線の下は持たない。それだけがルール。</p>
-    <div class="ledger" id="ledger"></div>
-    <details>
-      <summary id="more-sum">下位の銘柄も見る</summary>
-      <div class="ledger" id="ledger-rest" style="margin-top:10px"></div>
+    <details id="manual">
+      <summary>実際の株数・現金と違う場合はここで直す</summary>
+      <div id="edit-list"></div>
+      <div class="ctl" style="margin-top:14px">
+        <div class="fld">
+          <label for="edit-cash">現金（円）</label>
+          <input type="number" id="edit-cash" step="1000" />
+        </div>
+        <button class="act ghost" id="btn-save-manual">保存する</button>
+      </div>
     </details>
   </section>
 
+  <!-- ══ 設定 ══ -->
+  <section class="card">
+    <h2>設定</h2>
+    <p class="sub">この端末に保存されます</p>
+    <div class="ctl">
+      <div class="fld">
+        <label id="lbl-topn">保有する銘柄数</label>
+        <div class="seg" role="group" aria-labelledby="lbl-topn" id="seg-topn"></div>
+      </div>
+    </div>
+    <p class="sub" id="topn-note" style="margin:14px 0 0"></p>
+  </section>
+
+  <!-- ══ 順位表 ══ -->
+  <section class="card">
+    <h2>順位表</h2>
+    <p class="sub">この線の上を持つ。線の下は持たない。それだけがルール。
+      緑の縦線は今あなたが持っている銘柄です。</p>
+    <div id="ledger"></div>
+    <details>
+      <summary id="more-sum">下位の銘柄も見る</summary>
+      <div id="ledger-rest" style="margin-top:10px"></div>
+    </details>
+  </section>
+
+  <!-- ══ 検証結果 ══ -->
   <section class="card">
     <h2>このルールの検証結果</h2>
     <p class="sub">配当込み・売買コスト0.2%・譲渡益税20.315% を反映した後の数字</p>
@@ -323,6 +357,7 @@
     </div>
   </section>
 
+  <!-- ══ 注意 ══ -->
   <section class="card">
     <h2>必ず覚えておくこと</h2>
     <ul class="notes">
@@ -344,8 +379,9 @@
 
   <footer>
     データ生成 <span class="num" id="gen"></span>／
-    順位は配当込み・円換算のトータルリターンで算出。株数は実勢価格ベース。
+    順位は配当込み・円換算のトータルリターンで算出。株数と評価額は実勢価格ベース。
     日本株は100株単位のため、1単元が予算を超える銘柄は「買付不可」と表示されます。
+    保有情報はこの端末内にのみ保存され、どこにも送信されません。
     発注前に必ず証券会社の板で最終確認してください。
   </footer>
 </div>
@@ -353,158 +389,149 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const DATA = {"as_of": "2026-07-30", "lookback_from": "2025-07-30", "generated": "2026-07-30 18:53", "capital": 3000000, "top_n": 5, "lookback_months": 12, "usdjpy": 163.86399841308594, "ranking": [{"rank": 1, "symbol": "MU", "name": "マイクロン", "return_12m": 6.121194121770389, "sector": "半導体", "selected": true, "market": "US", "price_local": 739.0, "price_jpy": 121095.49482727051, "lot": 1, "shares": 4, "cost_jpy": 484381.97930908203, "buildable": true, "min_cost_jpy": 121095.49482727051}, {"rank": 2, "symbol": "INTC", "name": "インテル", "return_12m": 3.443790890539021, "sector": "半導体", "selected": true, "market": "US", "price_local": 81.87999725341797, "price_jpy": 13417.183739997563, "lot": 1, "shares": 44, "cost_jpy": 590356.0845598928, "buildable": true, "min_cost_jpy": 13417.183739997563}, {"rank": 3, "symbol": "LRCX", "name": "ラムリサーチ", "return_12m": 1.8268139705148747, "sector": "半導体", "selected": true, "market": "US", "price_local": 252.3500061035156, "price_jpy": 41351.080999688704, "lot": 1, "shares": 14, "cost_jpy": 578915.1339956418, "buildable": true, "min_cost_jpy": 41351.080999688704}, {"rank": 4, "symbol": "AMD", "name": "AMD", "return_12m": 1.6415689092113843, "sector": "半導体", "selected": true, "market": "US", "price_local": 429.55999755859375, "price_jpy": 70389.4187582666, "lot": 1, "shares": 8, "cost_jpy": 563115.3500661328, "buildable": true, "min_cost_jpy": 70389.4187582666}, {"rank": 5, "symbol": "AMAT", "name": "アプライドマテリアルズ", "return_12m": 1.5625862242582218, "sector": "半導体", "selected": true, "market": "US", "price_local": 436.4500122070313, "price_jpy": 71518.44410768432, "lot": 1, "shares": 8, "cost_jpy": 572147.5528614746, "buildable": true, "min_cost_jpy": 71518.44410768432}, {"rank": 6, "symbol": "CAT", "name": "キャタピラー", "return_12m": 1.0082127481632415, "sector": "資本財", "selected": false, "market": "US", "price_local": 782.7100219726562, "price_jpy": 128257.9937984338, "lot": 1, "shares": 4, "cost_jpy": 513031.9751937352, "buildable": true, "min_cost_jpy": 128257.9937984338}, {"rank": 7, "symbol": "8035.T", "name": "東京エレクトロン", "return_12m": 0.9627011357718358, "sector": "半導体", "selected": false, "market": "JP", "price_local": 52680.0, "price_jpy": 52680.0, "lot": 100, "shares": 0, "cost_jpy": 0.0, "buildable": false, "min_cost_jpy": 5268000.0}, {"rank": 8, "symbol": "GOOGL", "name": "アルファベット", "return_12m": 0.8966668717156387, "sector": "テック", "selected": false, "market": "US", "price_local": 336.7099914550781, "price_jpy": 55174.6455054651, "lot": 1, "shares": 10, "cost_jpy": 551746.455054651, "buildable": true, "min_cost_jpy": 55174.6455054651}, {"rank": 9, "symbol": "CSCO", "name": "シスコ", "return_12m": 0.8561341973020671, "sector": "テック", "selected": false, "market": "US", "price_local": 112.4800033569336, "price_jpy": 18431.423091584467, "lot": 1, "shares": 32, "cost_jpy": 589805.538930703, "buildable": true, "min_cost_jpy": 18431.423091584467}, {"rank": 10, "symbol": "MRK", "name": "メルク", "return_12m": 0.819136042668664, "sector": "ヘルスケア", "selected": false, "market": "US", "price_local": 130.36000061035156, "price_jpy": 21361.31093314453, "lot": 1, "shares": 28, "cost_jpy": 598116.7061280468, "buildable": true, "min_cost_jpy": 21361.31093314453}, {"rank": 11, "symbol": "JNJ", "name": "ジョンソン&ジョンソン", "return_12m": 0.7962477740652361, "sector": "ヘルスケア", "selected": false, "market": "US", "price_local": 265.5299987792969, "price_jpy": 43510.807298597414, "lot": 1, "shares": 13, "cost_jpy": 565640.4948817664, "buildable": true, "min_cost_jpy": 43510.807298597414}, {"rank": 12, "symbol": "AAPL", "name": "アップル", "return_12m": 0.7929033873548892, "sector": "テック", "selected": false, "market": "US", "price_local": 338.19000244140625, "price_jpy": 55417.16602338012, "lot": 1, "shares": 10, "cost_jpy": 554171.6602338012, "buildable": true, "min_cost_jpy": 55417.16602338012}, {"rank": 13, "symbol": "UNH", "name": "ユナイテッドヘルス", "return_12m": 0.7918278878161, "sector": "ヘルスケア", "selected": false}, {"rank": 14, "symbol": "LLY", "name": "イーライリリー", "return_12m": 0.7697886834102079, "sector": "ヘルスケア", "selected": false}, {"rank": 15, "symbol": "8306.T", "name": "三菱UFJ", "return_12m": 0.7462141426429028, "sector": "金融", "selected": false}, {"rank": 16, "symbol": "ADI", "name": "アナログデバイセズ", "return_12m": 0.7105222104341249, "sector": "半導体", "selected": false}, {"rank": 17, "symbol": "TXN", "name": "テキサスインスツルメンツ", "return_12m": 0.6245573754244866, "sector": "半導体", "selected": false}, {"rank": 18, "symbol": "9984.T", "name": "ソフトバンクG", "return_12m": 0.5999211296508837, "sector": "テック", "selected": false}, {"rank": 19, "symbol": "XOM", "name": "エクソンモービル", "return_12m": 0.5956285259389673, "sector": "エネルギー", "selected": false}, {"rank": 20, "symbol": "ABBV", "name": "アッヴィ", "return_12m": 0.5829687418047613, "sector": "ヘルスケア", "selected": false}, {"rank": 21, "symbol": "XLE", "name": "米エネルギーETF", "return_12m": 0.5228252332336993, "sector": "エネルギー", "selected": false}, {"rank": 22, "symbol": "GS", "name": "ゴールドマンサックス", "return_12m": 0.5113741410911137, "sector": "金融", "selected": false}, {"rank": 23, "symbol": "KO", "name": "コカコーラ", "return_12m": 0.47083121995804644, "sector": "生活必需品", "selected": false}, {"rank": 24, "symbol": "6861.T", "name": "キーエンス", "return_12m": 0.46256996458993993, "sector": "テック", "selected": false}, {"rank": 25, "symbol": "CVX", "name": "シェブロン", "return_12m": 0.4369840204639621, "sector": "エネルギー", "selected": false}, {"rank": 26, "symbol": "BAC", "name": "バンクオブアメリカ", "return_12m": 0.4362643888492592, "sector": "金融", "selected": false}, {"rank": 27, "symbol": "GE", "name": "GE", "return_12m": 0.42212920729262926, "sector": "資本財", "selected": false}, {"rank": 28, "symbol": "XLK", "name": "米テクノロジーETF", "return_12m": 0.39670802298340635, "sector": "テック", "selected": false}, {"rank": 29, "symbol": "XLV", "name": "米ヘルスケアETF", "return_12m": 0.3914321436528585, "sector": "ヘルスケア", "selected": false}, {"rank": 30, "symbol": "4502.T", "name": "武田薬品", "return_12m": 0.37644617974775163, "sector": "ヘルスケア", "selected": false}, {"rank": 31, "symbol": "MMM", "name": "スリーエム", "return_12m": 0.3648357218146572, "sector": "資本財", "selected": false}, {"rank": 32, "symbol": "AVGO", "name": "ブロードコム", "return_12m": 0.3607452488702507, "sector": "半導体", "selected": false}, {"rank": 33, "symbol": "4063.T", "name": "信越化学", "return_12m": 0.34857327917299874, "sector": "半導体", "selected": false}, {"rank": 34, "symbol": "XLB", "name": "米素材ETF", "return_12m": 0.309079051673649, "sector": "素材", "selected": false}, {"rank": 35, "symbol": "VZ", "name": "ベライゾン", "return_12m": 0.30719385045085446, "sector": "通信", "selected": false}, {"rank": 36, "symbol": "WMT", "name": "ウォルマート", "return_12m": 0.30280543955623185, "sector": "生活必需品", "selected": false}, {"rank": 37, "symbol": "XLI", "name": "米資本財ETF", "return_12m": 0.2995190422111369, "sector": "資本財", "selected": false}, {"rank": 38, "symbol": "JPM", "name": "JPモルガン", "return_12m": 0.29427099531314127, "sector": "金融", "selected": false}, {"rank": 39, "symbol": "6367.T", "name": "ダイキン工業", "return_12m": 0.270010288223304, "sector": "資本財", "selected": false}, {"rank": 40, "symbol": "PFE", "name": "ファイザー", "return_12m": 0.24779360595885613, "sector": "ヘルスケア", "selected": false}, {"rank": 41, "symbol": "XLP", "name": "米生活必需品ETF", "return_12m": 0.23164729067614442, "sector": "生活必需品", "selected": false}, {"rank": 42, "symbol": "XLF", "name": "米金融ETF", "return_12m": 0.205685149809266, "sector": "金融", "selected": false}, {"rank": 43, "symbol": "XLU", "name": "米公共ETF", "return_12m": 0.19606408676645337, "sector": "公共", "selected": false}, {"rank": 44, "symbol": "7203.T", "name": "トヨタ自動車", "return_12m": 0.19521436369497058, "sector": "自動車", "selected": false}, {"rank": 45, "symbol": "NVDA", "name": "エヌビディア", "return_12m": 0.17158447462204673, "sector": "半導体", "selected": false}, {"rank": 46, "symbol": "V", "name": "ビザ", "return_12m": 0.16911273949097172, "sector": "金融", "selected": false}, {"rank": 47, "symbol": "COST", "name": "コストコ", "return_12m": 0.16763816994785907, "sector": "生活必需品", "selected": false}, {"rank": 48, "symbol": "PEP", "name": "ペプシコ", "return_12m": 0.15273948346404986, "sector": "生活必需品", "selected": false}, {"rank": 49, "symbol": "MA", "name": "マスターカード", "return_12m": 0.11913540827847169, "sector": "金融", "selected": false}, {"rank": 50, "symbol": "XLY", "name": "米一般消費財ETF", "return_12m": 0.11256886556065715, "sector": "消費", "selected": false}, {"rank": 51, "symbol": "QCOM", "name": "クアルコム", "return_12m": 0.10320708373957799, "sector": "半導体", "selected": false}, {"rank": 52, "symbol": "AMZN", "name": "アマゾン", "return_12m": 0.08691604777980344, "sector": "テック", "selected": false}, {"rank": 53, "symbol": "PG", "name": "P&G", "return_12m": 0.08595859496508984, "sector": "生活必需品", "selected": false}, {"rank": 54, "symbol": "9432.T", "name": "NTT", "return_12m": 0.08335600311435898, "sector": "通信", "selected": false}, {"rank": 55, "symbol": "6758.T", "name": "ソニーグループ", "return_12m": 0.0502900822611263, "sector": "テック", "selected": false}, {"rank": 56, "symbol": "BA", "name": "ボーイング", "return_12m": 0.04606806655494555, "sector": "資本財", "selected": false}, {"rank": 57, "symbol": "TSLA", "name": "テスラ", "return_12m": 0.03220029659470591, "sector": "自動車", "selected": false}, {"rank": 58, "symbol": "HD", "name": "ホームデポ", "return_12m": 0.030267229609515, "sector": "消費", "selected": false}, {"rank": 59, "symbol": "MCD", "name": "マクドナルド", "return_12m": 0.01117027788376701, "sector": "消費", "selected": false}, {"rank": 60, "symbol": "IBM", "name": "IBM", "return_12m": -0.014989964484047325, "sector": "テック", "selected": false}, {"rank": 61, "symbol": "META", "name": "メタ", "return_12m": -0.06708894999344295, "sector": "テック", "selected": false}, {"rank": 62, "symbol": "DIS", "name": "ディズニー", "return_12m": -0.07741771704316747, "sector": "消費", "selected": false}, {"rank": 63, "symbol": "MSFT", "name": "マイクロソフト", "return_12m": -0.1533050674591251, "sector": "テック", "selected": false}, {"rank": 64, "symbol": "ADBE", "name": "アドビ", "return_12m": -0.20110338149411644, "sector": "テック", "selected": false}, {"rank": 65, "symbol": "CRM", "name": "セールスフォース", "return_12m": -0.20806878467206547, "sector": "テック", "selected": false}, {"rank": 66, "symbol": "NFLX", "name": "ネットフリックス", "return_12m": -0.31363286373321253, "sector": "テック", "selected": false}, {"rank": 67, "symbol": "NKE", "name": "ナイキ", "return_12m": -0.3607271116920109, "sector": "消費", "selected": false}, {"rank": 68, "symbol": "ORCL", "name": "オラクル", "return_12m": -0.4754442991208888, "sector": "テック", "selected": false}], "top": ["MU", "INTC", "LRCX", "AMD", "AMAT"], "holdings": [], "holdings_updated": null, "to_sell": [], "to_buy": ["MU", "INTC", "LRCX", "AMD", "AMAT"], "to_keep": [], "per_position_jpy": 600000.0};
-  const KEY = "momentum-holdings-v1";
-  const CFG = "momentum-config-v1";
+  const DATA = {"as_of": "2026-07-30", "lookback_from": "2025-07-30", "generated": "2026-07-30 19:15", "capital": 3000000, "top_n": 5, "lookback_months": 12, "usdjpy": 163.86399841308594, "ranking": [{"rank": 1, "symbol": "MU", "name": "マイクロン", "sector": "半導体", "return_12m": 6.121194121770389, "selected": true, "market": "US", "lot": 1, "price_local": 739.0, "price_jpy": 121095.49482727051, "shares": 4, "cost_jpy": 484381.97930908203, "buildable": true, "min_cost_jpy": 121095.49482727051}, {"rank": 2, "symbol": "INTC", "name": "インテル", "sector": "半導体", "return_12m": 3.443790890539021, "selected": true, "market": "US", "lot": 1, "price_local": 81.87999725341797, "price_jpy": 13417.183739997563, "shares": 44, "cost_jpy": 590356.0845598928, "buildable": true, "min_cost_jpy": 13417.183739997563}, {"rank": 3, "symbol": "LRCX", "name": "ラムリサーチ", "sector": "半導体", "return_12m": 1.8268139705148747, "selected": true, "market": "US", "lot": 1, "price_local": 252.3500061035156, "price_jpy": 41351.080999688704, "shares": 14, "cost_jpy": 578915.1339956418, "buildable": true, "min_cost_jpy": 41351.080999688704}, {"rank": 4, "symbol": "AMD", "name": "AMD", "sector": "半導体", "return_12m": 1.6415689092113843, "selected": true, "market": "US", "lot": 1, "price_local": 429.55999755859375, "price_jpy": 70389.4187582666, "shares": 8, "cost_jpy": 563115.3500661328, "buildable": true, "min_cost_jpy": 70389.4187582666}, {"rank": 5, "symbol": "AMAT", "name": "アプライドマテリアルズ", "sector": "半導体", "return_12m": 1.5625862242582218, "selected": true, "market": "US", "lot": 1, "price_local": 436.4500122070313, "price_jpy": 71518.44410768432, "shares": 8, "cost_jpy": 572147.5528614746, "buildable": true, "min_cost_jpy": 71518.44410768432}, {"rank": 6, "symbol": "CAT", "name": "キャタピラー", "sector": "資本財", "return_12m": 1.0082127481632415, "selected": false, "market": "US", "lot": 1, "price_local": 782.7100219726562, "price_jpy": 128257.9937984338, "shares": 4, "cost_jpy": 513031.9751937352, "buildable": true, "min_cost_jpy": 128257.9937984338}, {"rank": 7, "symbol": "8035.T", "name": "東京エレクトロン", "sector": "半導体", "return_12m": 0.9627011357718358, "selected": false, "market": "JP", "lot": 100, "price_local": 52680.0, "price_jpy": 52680.0, "shares": 0, "cost_jpy": 0.0, "buildable": false, "min_cost_jpy": 5268000.0}, {"rank": 8, "symbol": "GOOGL", "name": "アルファベット", "sector": "テック", "return_12m": 0.8966668717156387, "selected": false, "market": "US", "lot": 1, "price_local": 336.7099914550781, "price_jpy": 55174.6455054651, "shares": 10, "cost_jpy": 551746.455054651, "buildable": true, "min_cost_jpy": 55174.6455054651}, {"rank": 9, "symbol": "CSCO", "name": "シスコ", "sector": "テック", "return_12m": 0.8561341973020671, "selected": false, "market": "US", "lot": 1, "price_local": 112.4800033569336, "price_jpy": 18431.423091584467, "shares": 32, "cost_jpy": 589805.538930703, "buildable": true, "min_cost_jpy": 18431.423091584467}, {"rank": 10, "symbol": "MRK", "name": "メルク", "sector": "ヘルスケア", "return_12m": 0.819136042668664, "selected": false, "market": "US", "lot": 1, "price_local": 130.36000061035156, "price_jpy": 21361.31093314453, "shares": 28, "cost_jpy": 598116.7061280468, "buildable": true, "min_cost_jpy": 21361.31093314453}, {"rank": 11, "symbol": "JNJ", "name": "ジョンソン&ジョンソン", "sector": "ヘルスケア", "return_12m": 0.7962477740652361, "selected": false, "market": "US", "lot": 1, "price_local": 265.5299987792969, "price_jpy": 43510.807298597414, "shares": 13, "cost_jpy": 565640.4948817664, "buildable": true, "min_cost_jpy": 43510.807298597414}, {"rank": 12, "symbol": "AAPL", "name": "アップル", "sector": "テック", "return_12m": 0.7929033873548892, "selected": false, "market": "US", "lot": 1, "price_local": 338.19000244140625, "price_jpy": 55417.16602338012, "shares": 10, "cost_jpy": 554171.6602338012, "buildable": true, "min_cost_jpy": 55417.16602338012}, {"rank": 13, "symbol": "UNH", "name": "ユナイテッドヘルス", "sector": "ヘルスケア", "return_12m": 0.7918278878161, "selected": false, "market": "US", "lot": 1, "price_local": 420.5700073242187, "price_jpy": 68916.28301276731, "shares": 8, "cost_jpy": 551330.2641021385, "buildable": true, "min_cost_jpy": 68916.28301276731}, {"rank": 14, "symbol": "LLY", "name": "イーライリリー", "sector": "ヘルスケア", "return_12m": 0.7697886834102079, "selected": false, "market": "US", "lot": 1, "price_local": 1210.02001953125, "price_jpy": 198278.71856027097, "shares": 3, "cost_jpy": 594836.1556808129, "buildable": true, "min_cost_jpy": 198278.71856027097}, {"rank": 15, "symbol": "8306.T", "name": "三菱UFJ", "sector": "金融", "return_12m": 0.7462141426429028, "selected": false, "market": "JP", "lot": 100, "price_local": 3530.0, "price_jpy": 3530.0, "shares": 100, "cost_jpy": 353000.0, "buildable": true, "min_cost_jpy": 353000.0}, {"rank": 16, "symbol": "ADI", "name": "アナログデバイセズ", "sector": "半導体", "return_12m": 0.7105222104341249, "selected": false, "market": "US", "lot": 1, "price_local": 353.3699951171875, "price_jpy": 57904.620319115, "shares": 10, "cost_jpy": 579046.20319115, "buildable": true, "min_cost_jpy": 57904.620319115}, {"rank": 17, "symbol": "TXN", "name": "テキサスインスツルメンツ", "sector": "半導体", "return_12m": 0.6245573754244866, "selected": false, "market": "US", "lot": 1, "price_local": 271.29998779296875, "price_jpy": 44456.300769177265, "shares": 13, "cost_jpy": 577931.9099993045, "buildable": true, "min_cost_jpy": 44456.300769177265}, {"rank": 18, "symbol": "9984.T", "name": "ソフトバンクG", "sector": "テック", "return_12m": 0.5999211296508837, "selected": false, "market": "JP", "lot": 100, "price_local": 4622.0, "price_jpy": 4622.0, "shares": 100, "cost_jpy": 462200.0, "buildable": true, "min_cost_jpy": 462200.0}, {"rank": 19, "symbol": "XOM", "name": "エクソンモービル", "sector": "エネルギー", "return_12m": 0.5956285259389673, "selected": false, "market": "US", "lot": 1, "price_local": 156.75, "price_jpy": 25685.68175125122, "shares": 23, "cost_jpy": 590770.6802787781, "buildable": true, "min_cost_jpy": 25685.68175125122}, {"rank": 20, "symbol": "ABBV", "name": "アッヴィ", "sector": "ヘルスケア", "return_12m": 0.5829687418047613, "selected": false, "market": "US", "lot": 1, "price_local": 263.29998779296875, "price_jpy": 43145.38878187258, "shares": 13, "cost_jpy": 560890.0541643435, "buildable": true, "min_cost_jpy": 43145.38878187258}, {"rank": 21, "symbol": "XLE", "name": "米エネルギーETF", "sector": "エネルギー", "return_12m": 0.5228252332336993, "selected": false, "market": "US", "lot": 1, "price_local": 58.650001525878906, "price_jpy": 9610.623756964109, "shares": 62, "cost_jpy": 595858.6729317748, "buildable": true, "min_cost_jpy": 9610.623756964109}, {"rank": 22, "symbol": "GS", "name": "ゴールドマンサックス", "sector": "金融", "return_12m": 0.5113741410911137, "selected": false, "market": "US", "lot": 1, "price_local": 980.75, "price_jpy": 160709.61644363403, "shares": 3, "cost_jpy": 482128.8493309021, "buildable": true, "min_cost_jpy": 160709.61644363403}, {"rank": 23, "symbol": "KO", "name": "コカコーラ", "sector": "生活必需品", "return_12m": 0.47083121995804644, "selected": false, "market": "US", "lot": 1, "price_local": 89.08000183105469, "price_jpy": 14597.005278681638, "shares": 41, "cost_jpy": 598477.2164259471, "buildable": true, "min_cost_jpy": 14597.005278681638}, {"rank": 24, "symbol": "6861.T", "name": "キーエンス", "sector": "テック", "return_12m": 0.46256996458993993, "selected": false, "market": "JP", "lot": 100, "price_local": 79080.0, "price_jpy": 79080.0, "shares": 0, "cost_jpy": 0.0, "buildable": false, "min_cost_jpy": 7908000.0}, {"rank": 25, "symbol": "CVX", "name": "シェブロン", "sector": "エネルギー", "return_12m": 0.4369840204639621, "selected": false, "market": "US", "lot": 1, "price_local": 191.86000061035156, "price_jpy": 31438.946835549315, "shares": 19, "cost_jpy": 597339.989875437, "buildable": true, "min_cost_jpy": 31438.946835549315}, {"rank": 26, "symbol": "BAC", "name": "バンクオブアメリカ", "sector": "金融", "return_12m": 0.4362643888492592, "selected": false, "market": "US", "lot": 1, "price_local": 61.06999969482422, "price_jpy": 10007.174333079834, "shares": 59, "cost_jpy": 590423.2856517102, "buildable": true, "min_cost_jpy": 10007.174333079834}, {"rank": 27, "symbol": "GE", "name": "GE", "sector": "資本財", "return_12m": 0.42212920729262926, "selected": false, "market": "US", "lot": 1, "price_local": 350.6300048828125, "price_jpy": 57455.6345636975, "shares": 10, "cost_jpy": 574556.345636975, "buildable": true, "min_cost_jpy": 57455.6345636975}, {"rank": 28, "symbol": "XLK", "name": "米テクノロジーETF", "sector": "テック", "return_12m": 0.39670802298340635, "selected": false, "market": "US", "lot": 1, "price_local": 166.57000732421875, "price_jpy": 27294.827415843494, "shares": 21, "cost_jpy": 573191.3757327134, "buildable": true, "min_cost_jpy": 27294.827415843494}, {"rank": 29, "symbol": "XLV", "name": "米ヘルスケアETF", "sector": "ヘルスケア", "return_12m": 0.3914321436528585, "selected": false, "market": "US", "lot": 1, "price_local": 166.24000549316406, "price_jpy": 27240.751996323233, "shares": 22, "cost_jpy": 599296.5439191111, "buildable": true, "min_cost_jpy": 27240.751996323233}, {"rank": 30, "symbol": "4502.T", "name": "武田薬品", "sector": "ヘルスケア", "return_12m": 0.37644617974775163, "selected": false, "market": "JP", "lot": 100, "price_local": 5680.0, "price_jpy": 5680.0, "shares": 100, "cost_jpy": 568000.0, "buildable": true, "min_cost_jpy": 568000.0}, {"rank": 31, "symbol": "MMM", "name": "スリーエム", "sector": "資本財", "return_12m": 0.3648357218146572, "selected": false, "market": "US", "lot": 1, "price_local": 177.9499969482422, "price_jpy": 29159.598017535405, "shares": 20, "cost_jpy": 583191.9603507081, "buildable": true, "min_cost_jpy": 29159.598017535405}, {"rank": 32, "symbol": "AVGO", "name": "ブロードコム", "sector": "半導体", "return_12m": 0.3607452488702507, "selected": false, "market": "US", "lot": 1, "price_local": 370.32000732421875, "price_jpy": 60682.117092509754, "shares": 9, "cost_jpy": 546139.0538325878, "buildable": true, "min_cost_jpy": 60682.117092509754}, {"rank": 33, "symbol": "4063.T", "name": "信越化学", "sector": "半導体", "return_12m": 0.34857327917299874, "selected": false, "market": "JP", "lot": 100, "price_local": 5815.0, "price_jpy": 5815.0, "shares": 100, "cost_jpy": 581500.0, "buildable": true, "min_cost_jpy": 581500.0}, {"rank": 34, "symbol": "XLB", "name": "米素材ETF", "sector": "素材", "return_12m": 0.309079051673649, "selected": false, "market": "US", "lot": 1, "price_local": 51.7400016784668, "price_jpy": 8478.323552933347, "shares": 70, "cost_jpy": 593482.6487053343, "buildable": true, "min_cost_jpy": 8478.323552933347}, {"rank": 35, "symbol": "VZ", "name": "ベライゾン", "sector": "通信", "return_12m": 0.30719385045085446, "selected": false, "market": "US", "lot": 1, "price_local": 47.220001220703125, "price_jpy": 7737.658205095213, "shares": 77, "cost_jpy": 595799.6817923314, "buildable": true, "min_cost_jpy": 7737.658205095213}, {"rank": 36, "symbol": "WMT", "name": "ウォルマート", "sector": "生活必需品", "return_12m": 0.30280543955623185, "selected": false, "market": "US", "lot": 1, "price_local": 114.22000122070312, "price_jpy": 18716.54609877197, "shares": 32, "cost_jpy": 598929.4751607031, "buildable": true, "min_cost_jpy": 18716.54609877197}, {"rank": 37, "symbol": "XLI", "name": "米資本財ETF", "sector": "資本財", "return_12m": 0.2995190422111369, "selected": false, "market": "US", "lot": 1, "price_local": 176.66000366210938, "price_jpy": 28948.214559743647, "shares": 20, "cost_jpy": 578964.2911948729, "buildable": true, "min_cost_jpy": 28948.214559743647}, {"rank": 38, "symbol": "JPM", "name": "JPモルガン", "sector": "金融", "return_12m": 0.29427099531314127, "selected": false, "market": "US", "lot": 1, "price_local": 344.7099914550781, "price_jpy": 56485.55749276979, "shares": 10, "cost_jpy": 564855.5749276979, "buildable": true, "min_cost_jpy": 56485.55749276979}, {"rank": 39, "symbol": "6367.T", "name": "ダイキン工業", "sector": "資本財", "return_12m": 0.270010288223304, "selected": false, "market": "JP", "lot": 100, "price_local": 23640.0, "price_jpy": 23640.0, "shares": 0, "cost_jpy": 0.0, "buildable": false, "min_cost_jpy": 2364000.0}, {"rank": 40, "symbol": "PFE", "name": "ファイザー", "sector": "ヘルスケア", "return_12m": 0.24779360595885613, "selected": false, "market": "US", "lot": 1, "price_local": 25.149999618530273, "price_jpy": 4121.179497579957, "shares": 145, "cost_jpy": 597571.0271490937, "buildable": true, "min_cost_jpy": 4121.179497579957}, {"rank": 41, "symbol": "XLP", "name": "米生活必需品ETF", "sector": "生活必需品", "return_12m": 0.23164729067614442, "selected": false, "market": "US", "lot": 1, "price_local": 87.36000061035156, "price_jpy": 14315.159001381835, "shares": 41, "cost_jpy": 586921.5190566552, "buildable": true, "min_cost_jpy": 14315.159001381835}, {"rank": 42, "symbol": "XLF", "name": "米金融ETF", "sector": "金融", "return_12m": 0.205685149809266, "selected": false, "market": "US", "lot": 1, "price_local": 56.68000030517578, "price_jpy": 9287.811480061035, "shares": 64, "cost_jpy": 594419.9347239062, "buildable": true, "min_cost_jpy": 9287.811480061035}, {"rank": 43, "symbol": "XLU", "name": "米公共ETF", "sector": "公共", "return_12m": 0.19606408676645337, "selected": false, "market": "US", "lot": 1, "price_local": 44.90999984741211, "price_jpy": 7359.132143728028, "shares": 81, "cost_jpy": 596089.7036419702, "buildable": true, "min_cost_jpy": 7359.132143728028}, {"rank": 44, "symbol": "7203.T", "name": "トヨタ自動車", "sector": "自動車", "return_12m": 0.19521436369497058, "selected": false, "market": "JP", "lot": 100, "price_local": 3126.0, "price_jpy": 3126.0, "shares": 100, "cost_jpy": 312600.0, "buildable": true, "min_cost_jpy": 312600.0}, {"rank": 45, "symbol": "NVDA", "name": "エヌビディア", "sector": "半導体", "return_12m": 0.17158447462204673, "selected": false, "market": "US", "lot": 1, "price_local": 190.00999450683594, "price_jpy": 31135.79743833863, "shares": 19, "cost_jpy": 591580.151328434, "buildable": true, "min_cost_jpy": 31135.79743833863}, {"rank": 46, "symbol": "V", "name": "ビザ", "sector": "金融", "return_12m": 0.16911273949097172, "selected": false, "market": "US", "lot": 1, "price_local": 368.7300109863281, "price_jpy": 60421.57393512083, "shares": 9, "cost_jpy": 543794.1654160875, "buildable": true, "min_cost_jpy": 60421.57393512083}, {"rank": 47, "symbol": "COST", "name": "コストコ", "sector": "生活必需品", "return_12m": 0.16763816994785907, "selected": false, "market": "US", "lot": 1, "price_local": 974.030029296875, "price_jpy": 159608.45517500117, "shares": 3, "cost_jpy": 478825.3655250035, "buildable": true, "min_cost_jpy": 159608.45517500117}, {"rank": 48, "symbol": "PEP", "name": "ペプシコ", "sector": "生活必需品", "return_12m": 0.15273948346404986, "selected": false, "market": "US", "lot": 1, "price_local": 143.5, "price_jpy": 23514.483772277832, "shares": 25, "cost_jpy": 587862.0943069458, "buildable": true, "min_cost_jpy": 23514.483772277832}, {"rank": 49, "symbol": "MA", "name": "マスターカード", "sector": "金融", "return_12m": 0.11913540827847169, "selected": false, "market": "US", "lot": 1, "price_local": 563.3200073242188, "price_jpy": 92307.86878623534, "shares": 6, "cost_jpy": 553847.212717412, "buildable": true, "min_cost_jpy": 92307.86878623534}, {"rank": 50, "symbol": "XLY", "name": "米一般消費財ETF", "sector": "消費", "return_12m": 0.11256886556065715, "selected": false, "market": "US", "lot": 1, "price_local": 111.61000061035156, "price_jpy": 18288.86096289917, "shares": 32, "cost_jpy": 585243.5508127734, "buildable": true, "min_cost_jpy": 18288.86096289917}, {"rank": 51, "symbol": "QCOM", "name": "クアルコム", "sector": "半導体", "return_12m": 0.10320708373957799, "selected": false, "market": "US", "lot": 1, "price_local": 155.67999267578125, "price_jpy": 25510.34607277345, "shares": 23, "cost_jpy": 586737.9596737893, "buildable": true, "min_cost_jpy": 25510.34607277345}, {"rank": 52, "symbol": "AMZN", "name": "アマゾン", "sector": "テック", "return_12m": 0.08691604777980344, "selected": false, "market": "US", "lot": 1, "price_local": 226.64999389648438, "price_jpy": 37139.77424017945, "shares": 16, "cost_jpy": 594236.3878428712, "buildable": true, "min_cost_jpy": 37139.77424017945}, {"rank": 53, "symbol": "PG", "name": "P&G", "sector": "生活必需品", "return_12m": 0.08595859496508984, "selected": false, "market": "US", "lot": 1, "price_local": 146.10000610351562, "price_jpy": 23940.53116829833, "shares": 25, "cost_jpy": 598513.2792074583, "buildable": true, "min_cost_jpy": 23940.53116829833}, {"rank": 54, "symbol": "9432.T", "name": "NTT", "sector": "通信", "return_12m": 0.08335600311435898, "selected": false, "market": "JP", "lot": 100, "price_local": 159.0, "price_jpy": 159.0, "shares": 3700, "cost_jpy": 588300.0, "buildable": true, "min_cost_jpy": 15900.0}, {"rank": 55, "symbol": "6758.T", "name": "ソニーグループ", "sector": "テック", "return_12m": 0.0502900822611263, "selected": false, "market": "JP", "lot": 100, "price_local": 3809.0, "price_jpy": 3809.0, "shares": 100, "cost_jpy": 380900.0, "buildable": true, "min_cost_jpy": 380900.0}, {"rank": 56, "symbol": "BA", "name": "ボーイング", "sector": "資本財", "return_12m": 0.04606806655494555, "selected": false, "market": "US", "lot": 1, "price_local": 214.00999450683594, "price_jpy": 35068.533400252694, "shares": 17, "cost_jpy": 596165.0678042958, "buildable": true, "min_cost_jpy": 35068.533400252694}, {"rank": 57, "symbol": "TSLA", "name": "テスラ", "sector": "自動車", "return_12m": 0.03220029659470591, "selected": false, "market": "US", "lot": 1, "price_local": 298.32000732421875, "price_jpy": 48883.90920676757, "shares": 12, "cost_jpy": 586606.9104812108, "buildable": true, "min_cost_jpy": 48883.90920676757}, {"rank": 58, "symbol": "HD", "name": "ホームデポ", "sector": "消費", "return_12m": 0.030267229609515, "selected": false, "market": "US", "lot": 1, "price_local": 338.2699890136719, "price_jpy": 55430.272942930926, "shares": 10, "cost_jpy": 554302.7294293093, "buildable": true, "min_cost_jpy": 55430.272942930926}, {"rank": 59, "symbol": "MCD", "name": "マクドナルド", "sector": "消費", "return_12m": 0.01117027788376701, "selected": false, "market": "US", "lot": 1, "price_local": 271.5199890136719, "price_jpy": 44492.35104885744, "shares": 13, "cost_jpy": 578400.5636351467, "buildable": true, "min_cost_jpy": 44492.35104885744}, {"rank": 60, "symbol": "IBM", "name": "IBM", "sector": "テック", "return_12m": -0.014989964484047325, "selected": false, "market": "US", "lot": 1, "price_local": 226.44000244140625, "price_jpy": 37105.36420071777, "shares": 16, "cost_jpy": 593685.8272114843, "buildable": true, "min_cost_jpy": 37105.36420071777}, {"rank": 61, "symbol": "META", "name": "メタ", "sector": "テック", "return_12m": -0.06708894999344295, "selected": false, "market": "US", "lot": 1, "price_local": 585.6099853515625, "price_jpy": 95960.39371033572, "shares": 6, "cost_jpy": 575762.3622620143, "buildable": true, "min_cost_jpy": 95960.39371033572}, {"rank": 62, "symbol": "DIS", "name": "ディズニー", "sector": "消費", "return_12m": -0.07741771704316747, "selected": false, "market": "US", "lot": 1, "price_local": 98.4800033569336, "price_jpy": 16137.327113801264, "shares": 37, "cost_jpy": 597081.1032106468, "buildable": true, "min_cost_jpy": 16137.327113801264}, {"rank": 63, "symbol": "MSFT", "name": "マイクロソフト", "sector": "テック", "return_12m": -0.1533050674591251, "selected": false, "market": "US", "lot": 1, "price_local": 390.5400085449219, "price_jpy": 63995.44734045165, "shares": 9, "cost_jpy": 575959.0260640648, "buildable": true, "min_cost_jpy": 63995.44734045165}, {"rank": 64, "symbol": "ADBE", "name": "アドビ", "sector": "テック", "return_12m": -0.20110338149411644, "selected": false, "market": "US", "lot": 1, "price_local": 263.42999267578125, "price_jpy": 43166.69190178346, "shares": 13, "cost_jpy": 561166.994723185, "buildable": true, "min_cost_jpy": 43166.69190178346}, {"rank": 65, "symbol": "CRM", "name": "セールスフォース", "sector": "テック", "return_12m": -0.20806878467206547, "selected": false, "market": "US", "lot": 1, "price_local": 188.3800048828125, "price_jpy": 30868.70082117431, "shares": 19, "cost_jpy": 586505.3156023119, "buildable": true, "min_cost_jpy": 30868.70082117431}, {"rank": 66, "symbol": "NFLX", "name": "ネットフリックス", "sector": "テック", "return_12m": -0.31363286373321253, "selected": false, "market": "US", "lot": 1, "price_local": 73.62999725341797, "price_jpy": 12065.305753089604, "shares": 49, "cost_jpy": 591199.9819013906, "buildable": true, "min_cost_jpy": 12065.305753089604}, {"rank": 67, "symbol": "NKE", "name": "ナイキ", "sector": "消費", "return_12m": -0.3607271116920109, "selected": false, "market": "US", "lot": 1, "price_local": 43.220001220703125, "price_jpy": 7082.202211442869, "shares": 84, "cost_jpy": 594904.985761201, "buildable": true, "min_cost_jpy": 7082.202211442869}, {"rank": 68, "symbol": "ORCL", "name": "オラクル", "sector": "テック", "return_12m": -0.4754442991208888, "selected": false, "market": "US", "lot": 1, "price_local": 117.73999786376953, "price_jpy": 19293.346823105472, "shares": 31, "cost_jpy": 598093.7515162696, "buildable": true, "min_cost_jpy": 19293.346823105472}], "top": ["MU", "INTC", "LRCX", "AMD", "AMAT"], "holdings": [], "holdings_updated": null, "to_sell": [], "to_buy": ["MU", "INTC", "LRCX", "AMD", "AMAT"], "to_keep": [], "per_position_jpy": 600000.0};
+  const PF_KEY = "momentum-portfolio-v2";
+  const CFG_KEY = "momentum-config-v2";
   const TOPS = [3, 5, 10];
+  const COST_RATE = 0.001;   // 片道 0.1%（手数料＋スリッページ）
 
-  const yen = n => Math.round(n).toLocaleString("ja-JP") + "円";
-  const pct = n => (n >= 0 ? "+" : "") + (n * 100).toFixed(1) + "%";
   const el = id => document.getElementById(id);
+  const yen = n => Math.round(n).toLocaleString("ja-JP");
+  const yenc = n => yen(n) + "円";
+  const pct = n => (n >= 0 ? "+" : "") + (n * 100).toFixed(1) + "%";
+  const signed = n => (n >= 0 ? "+" : "−") + yen(Math.abs(n));
 
-  let cfg = { topN: DATA.top_n, capital: DATA.capital };
-  try { Object.assign(cfg, JSON.parse(localStorage.getItem(CFG) || "{}")); } catch (e) {}
+  const bySym = {};
+  DATA.ranking.forEach(r => { bySym[r.symbol] = r; });
+  const priceOf = s => (bySym[s] && bySym[s].price_jpy) || null;
+  const lotOf = s => (bySym[s] && bySym[s].lot) || 1;
+  const nameOf = s => (bySym[s] && bySym[s].name) || s;
+  const rankOf = s => (bySym[s] && bySym[s].rank) || null;
+
+  let cfg = { topN: DATA.top_n };
+  try { Object.assign(cfg, JSON.parse(localStorage.getItem(CFG_KEY) || "{}")); } catch (e) {}
   if (!TOPS.includes(cfg.topN)) cfg.topN = 5;
+  const saveCfg = () => localStorage.setItem(CFG_KEY, JSON.stringify(cfg));
 
-  const readHold = () => {
-    try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { return null; }
-  };
-  const saveHold = syms => localStorage.setItem(KEY,
-    JSON.stringify({ symbols: syms, updated: new Date().toISOString().slice(0, 10) }));
-  const saveCfg = () => localStorage.setItem(CFG, JSON.stringify(cfg));
-
-  function shares(row, perPos) {
-    if (!row.price_jpy || !row.lot) return null;
-    const q = Math.floor((perPos / row.price_jpy) / row.lot) * row.lot;
-    return { qty: q, cost: q * row.price_jpy, ok: q > 0, min: row.lot * row.price_jpy };
+  function loadPf() {
+    try {
+      const p = JSON.parse(localStorage.getItem(PF_KEY) || "null");
+      if (p && typeof p.cash === "number" && p.positions) return p;
+    } catch (e) {}
+    return null;
   }
+  const savePf = p => localStorage.setItem(PF_KEY, JSON.stringify(p));
 
   function toast(msg) {
     const t = el("toast");
     t.textContent = msg; t.classList.add("on");
-    clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("on"), 2200);
+    clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("on"), 2400);
   }
 
-  function ledgerRow(r, inside) {
-    const d = document.createElement("div");
-    d.className = "lrow" + (inside ? " in" : "");
-    d.innerHTML =
-      '<div class="rk">' + r.rank + '</div>' +
-      '<div class="who"><b></b><span></span></div>' +
-      '<div class="ret ' + (r.return_12m >= 0 ? "pos" : "neg") + '"></div>';
-    d.querySelector("b").textContent = r.symbol;
-    d.querySelector("span").textContent = r.name + " · " + r.sector;
-    d.querySelector(".ret").textContent = pct(r.return_12m);
-    return d;
+  /* ── 評価 ─────────────────────────────────────────────── */
+  function valuate(pf) {
+    const rows = [];
+    let mv = 0, basis = 0;
+    Object.entries(pf.positions).forEach(([sym, p]) => {
+      if (!p || !p.shares) return;
+      const price = priceOf(sym);
+      const val = price ? p.shares * price : null;
+      if (val != null) mv += val;
+      basis += p.cost || 0;
+      rows.push({
+        sym, shares: p.shares, cost: p.cost || 0,
+        unit: p.shares ? (p.cost || 0) / p.shares : 0,
+        price, value: val,
+        pnl: val != null ? val - (p.cost || 0) : null,
+      });
+    });
+    rows.sort((a, b) => (b.value || 0) - (a.value || 0));
+    return { rows, mv, basis, cash: pf.cash, total: pf.cash + mv,
+             pnl: mv + pf.cash - (basis + pf.cash) };
   }
 
+  /* ── 発注計画 ─────────────────────────────────────────── */
+  function buildPlan(pf, v, n) {
+    const top = DATA.ranking.slice(0, n).map(r => r.symbol);
+    const per = v.total / n;
+    const orders = [];
+
+    // 上位から外れた保有 → 全部売る
+    Object.entries(pf.positions).forEach(([sym, p]) => {
+      if (!p || !p.shares || top.includes(sym)) return;
+      const price = priceOf(sym);
+      orders.push({ kind: "sell", sym, shares: p.shares, price,
+                    amount: price ? p.shares * price : null,
+                    why: rankOf(sym) ? rankOf(sym) + "位に転落" : "順位圏外" });
+    });
+
+    // 上位N銘柄 → 目標株数に合わせる
+    top.forEach(sym => {
+      const price = priceOf(sym), lot = lotOf(sym);
+      const held = (pf.positions[sym] && pf.positions[sym].shares) || 0;
+      if (!price) {
+        orders.push({ kind: "skip", sym, shares: 0, price: null,
+                      why: "現在値が取れませんでした" });
+        return;
+      }
+      const target = Math.floor((per / price) / lot) * lot;
+      if (target <= 0) {
+        orders.push({ kind: "skip", sym, shares: 0, price,
+                      why: "1単元 " + lot + "株 = " + yenc(lot * price) +
+                           " が1銘柄予算 " + yenc(per) + " を超えます" });
+        return;
+      }
+      const d = target - held;
+      if (d > 0) orders.push({ kind: "buy", sym, shares: d, price, amount: d * price,
+                               why: rankOf(sym) + "位 " + pct(bySym[sym].return_12m) });
+      else if (d < 0) orders.push({ kind: "sell", sym, shares: -d, price,
+                                    amount: -d * price, why: "保有を減らして均等に戻す" });
+      else orders.push({ kind: "keep", sym, shares: held, price, amount: held * price,
+                         why: rankOf(sym) + "位 " + pct(bySym[sym].return_12m) });
+    });
+
+    const order = { sell: 0, buy: 1, keep: 2, skip: 3 };
+    orders.sort((a, b) => order[a.kind] - order[b.kind]);
+    return { orders, per, top };
+  }
+
+  /* ── 発注を反映 ───────────────────────────────────────── */
+  function execute(pf, plan) {
+    const np = { cash: pf.cash, positions: JSON.parse(JSON.stringify(pf.positions)),
+                 updated: new Date().toISOString().slice(0, 10) };
+    // 売りを先に処理して現金を作る（実際の順序と同じ）
+    plan.orders.filter(o => o.kind === "sell").forEach(o => {
+      const p = np.positions[o.sym];
+      if (!p) return;
+      const unit = p.shares ? p.cost / p.shares : 0;
+      p.cost -= unit * o.shares;
+      p.shares -= o.shares;
+      np.cash += o.amount * (1 - COST_RATE);
+      if (p.shares <= 0) delete np.positions[o.sym];
+    });
+    plan.orders.filter(o => o.kind === "buy").forEach(o => {
+      const spend = o.amount * (1 + COST_RATE);
+      np.positions[o.sym] = np.positions[o.sym] || { shares: 0, cost: 0 };
+      np.positions[o.sym].shares += o.shares;
+      np.positions[o.sym].cost += spend;
+      np.cash -= spend;
+    });
+    if (np.cash < 0) np.cash = 0;
+    return np;
+  }
+
+  /* ── 描画 ─────────────────────────────────────────────── */
   function render() {
     el("asof").textContent = DATA.as_of;
     el("from").textContent = DATA.lookback_from || "―";
     el("univ").textContent = DATA.ranking.length;
     el("fx").textContent = DATA.usdjpy.toFixed(2);
     el("gen").textContent = DATA.generated;
-    el("cap").value = cfg.capital;
 
     const n = cfg.topN;
-    const perPos = cfg.capital / n;
-    const top = DATA.ranking.slice(0, n);
-    const topSyms = top.map(r => r.symbol);
+    const pf = loadPf();
 
-    // ── 保有構成
-    const body = el("alloc"); body.textContent = "";
-    let total = 0; const bad = [];
-    top.forEach(r => {
-      const s = shares(r, perPos);
-      if (s && s.ok) total += s.cost; else bad.push(r);
-      const tr = document.createElement("tr");
-      tr.innerHTML = '<td><span class="tick"></span><span class="nm"></span></td>' +
-        '<td><span class="sec"></span></td>' +
-        '<td class="r num"></td><td class="r num"></td><td class="r num"></td>';
-      const td = tr.children;
-      td[0].querySelector(".tick").textContent = r.symbol;
-      td[0].querySelector(".nm").textContent = " " + r.name;
-      td[1].querySelector(".sec").textContent = r.sector;
-      td[2].textContent = pct(r.return_12m);
-      td[2].className = "r num " + (r.return_12m >= 0 ? "pos" : "neg");
-      td[3].textContent = s && s.ok ? s.qty.toLocaleString("ja-JP") : "―";
-      td[4].textContent = s && s.ok ? yen(s.cost) : "買付不可";
-      body.appendChild(tr);
-    });
-    el("alloc-foot").innerHTML =
-      '<tr><td colspan="4">合計</td><td class="r num">' + yen(total) + "</td></tr>";
-    el("budget").textContent =
-      "1銘柄あたり " + yen(perPos) + "（資金 " + yen(cfg.capital) + " ÷ " + n + "銘柄）";
-
-    // ── 警告（買付不可・セクター集中）
-    const al = el("alerts"); al.textContent = "";
-    bad.forEach(r => {
-      const s = shares(r, perPos);
-      const d = document.createElement("div"); d.className = "warn";
-      d.innerHTML = "<b>" + r.symbol + " は買えません。</b>" +
-        (s ? "1単元 " + r.lot + "株 = " + yen(s.min) + " で、1銘柄予算 " + yen(perPos) +
-             " を超えます。単元未満株が使えないなら次順位に繰り下げてください。"
-           : "現在値が取得できませんでした。");
-      al.appendChild(d);
-    });
-    const cnt = {};
-    top.forEach(r => cnt[r.sector] = (cnt[r.sector] || 0) + 1);
-    const worst = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0];
-    if (worst && worst[1] >= Math.ceil(n * 0.6)) {
-      const d = document.createElement("div"); d.className = "warn";
-      d.innerHTML = "<b>" + worst[1] + "銘柄が「" + worst[0] + "」に集中しています。</b>" +
-        "このルールはセクター分散を考慮しません。" + worst[0] +
-        "が崩れると同時に下落します。分散されていない前提で金額を決めてください。";
-      al.appendChild(d);
-    }
-
-    // ── 今月の指示
-    const held = readHold();
-    const cur = held && Array.isArray(held.symbols) ? held.symbols : [];
-    const sell = cur.filter(s => !topSyms.includes(s));
-    const buy = topSyms.filter(s => !cur.includes(s));
-    const keep = cur.filter(s => topSyms.includes(s));
-    const vd = el("verdict");
-    const mv = el("moves"); mv.textContent = "";
-
-    el("held-note").textContent = cur.length
-      ? "登録済みの保有 " + cur.length + "銘柄（" + (held.updated || "日付なし") + " 時点）"
-      : "保有がまだ登録されていません";
-
-    if (!cur.length) {
-      vd.classList.remove("hold");
-      el("action").textContent = "上位" + n + "銘柄を買い付けてください";
-      addGroup(mv, "買う", topSyms, "buy", top, perPos);
-    } else if (!sell.length && !buy.length) {
-      vd.classList.add("hold");
-      el("action").textContent = "入れ替え不要。そのまま保有を継続。";
-      addGroup(mv, "継続保有", keep, "", top, perPos);
-    } else {
-      vd.classList.remove("hold");
-      el("action").textContent =
-        sell.length + "銘柄を売り、" + buy.length + "銘柄を買う";
-      if (sell.length) addGroup(mv, "売る", sell, "sell", DATA.ranking, perPos);
-      if (buy.length) addGroup(mv, "買う", buy, "buy", top, perPos);
-      if (keep.length) addGroup(mv, "継続保有", keep, "", top, perPos);
-    }
-
-    // ── 順位表と境界線
-    const lg = el("ledger"); lg.textContent = "";
-    DATA.ranking.slice(0, Math.max(n + 5, 12)).forEach((r, i) => {
-      if (i === n) {
-        const c = document.createElement("div");
-        c.className = "cut";
-        c.innerHTML = '<span>ここから下は持たない</span><i></i>';
-        lg.appendChild(c);
-      }
-      lg.appendChild(ledgerRow(r, i < n));
-    });
-    const rest = DATA.ranking.slice(Math.max(n + 5, 12));
-    const lr = el("ledger-rest"); lr.textContent = "";
-    rest.forEach(r => lr.appendChild(ledgerRow(r, false)));
-    el("more-sum").textContent = "下位 " + rest.length + " 銘柄も見る";
-
-    // ── セグメント
+    // 銘柄数のセグメント
     const seg = el("seg-topn"); seg.textContent = "";
     TOPS.forEach(v => {
       const b = document.createElement("button");
@@ -514,39 +541,192 @@
       b.onclick = () => { cfg.topN = v; saveCfg(); render(); };
       seg.appendChild(b);
     });
-  }
+    el("topn-note").textContent = n === 3
+      ? "上位3銘柄は検証上のリターンが最も高い一方、1銘柄が資産の33%になります。"
+        + "検証では21年のうち7年がマイナスでした（上位5なら4年）。"
+      : n === 5
+      ? "上位5銘柄なら1銘柄20%に収まります。検証で21年のうちマイナスは4年でした。"
+      : "上位10銘柄は最も分散されますが、検証上のリターンは最も低くなります。";
 
-  function addGroup(parent, label, syms, kind, source, perPos) {
-    const g = document.createElement("div"); g.className = "move-grp";
-    const l = document.createElement("div"); l.className = "move-lbl";
-    l.textContent = label; g.appendChild(l);
-    const c = document.createElement("div"); c.className = "chips";
-    syms.forEach(sym => {
-      const r = source.find(x => x.symbol === sym) ||
-                DATA.ranking.find(x => x.symbol === sym) || { symbol: sym, name: sym };
-      const s = kind === "buy" ? shares(r, perPos) : null;
-      const sp = document.createElement("span");
-      sp.className = "chip " + kind;
-      const t = document.createElement("span"); t.className = "t"; t.textContent = sym;
-      const q = document.createElement("span"); q.className = "q";
-      q.textContent = r.name + (s && s.ok ? " " + s.qty.toLocaleString("ja-JP") + "株"
-                       : (r.rank ? " " + r.rank + "位" : ""));
-      sp.appendChild(t); sp.appendChild(q); c.appendChild(sp);
+    el("setup").hidden = !!pf;
+    el("hero").hidden = !pf;
+    el("rebalance").hidden = !pf;
+
+    // ── 順位表（保有中は緑線）
+    const held = pf ? Object.keys(pf.positions).filter(s => pf.positions[s].shares > 0) : [];
+    const lg = el("ledger"); lg.textContent = "";
+    const shown = Math.max(n + 5, 12);
+    DATA.ranking.slice(0, shown).forEach((r, i) => {
+      if (i === n) {
+        const c = document.createElement("div");
+        c.className = "cut";
+        c.innerHTML = '<span>ここから下は持たない</span><i></i>';
+        lg.appendChild(c);
+      }
+      lg.appendChild(ledgerRow(r, i < n, held.includes(r.symbol)));
     });
-    g.appendChild(c); parent.appendChild(g);
+    const rest = DATA.ranking.slice(shown);
+    const lr = el("ledger-rest"); lr.textContent = "";
+    rest.forEach(r => lr.appendChild(ledgerRow(r, false, held.includes(r.symbol))));
+    el("more-sum").textContent = "下位 " + rest.length + " 銘柄も見る";
+
+    if (!pf) return;
+
+    // ── 現在の資産
+    const v = valuate(pf);
+    el("total").textContent = yen(v.total);
+    el("mv").textContent = yenc(v.mv);
+    el("cash").textContent = yenc(v.cash);
+    el("basis").textContent = yenc(v.basis + v.cash);
+    el("hero-sub").textContent = "最後に発注を記録したのは " + (pf.updated || "―")
+      + "。株価は " + DATA.as_of + " 時点です";
+
+    const investedBasis = v.basis;
+    if (investedBasis > 0) {
+      const rate = v.mv / investedBasis - 1;
+      const cls = v.pnl >= 0 ? "pos" : "neg";
+      el("pnl").innerHTML = '保有株の損益 <span class="num ' + cls + '">'
+        + signed(v.pnl) + "円</span> " + '<span class="num ' + cls + '">('
+        + pct(rate) + ")</span>";
+    } else {
+      el("pnl").textContent = "まだ買い付けていません";
+    }
+
+    const pw = el("pos-wrap");
+    pw.hidden = v.rows.length === 0;
+    const tb = el("positions"); tb.textContent = "";
+    v.rows.forEach(r => {
+      const cls = (r.pnl || 0) >= 0 ? "pos" : "neg";
+      const tr = document.createElement("tr");
+      tr.innerHTML =
+        '<td><span class="tick"></span><span class="nm"></span></td>' +
+        '<td class="r num"></td><td class="r num"></td><td class="r num"></td>' +
+        '<td class="r num"></td><td class="r num ' + cls + '"></td>';
+      const td = tr.children;
+      td[0].querySelector(".tick").textContent = r.sym;
+      td[0].querySelector(".nm").textContent = " " + nameOf(r.sym);
+      td[1].textContent = r.shares.toLocaleString("ja-JP");
+      td[2].textContent = yen(r.unit);
+      td[3].textContent = r.price != null ? yen(r.price) : "―";
+      td[4].textContent = r.value != null ? yen(r.value) : "―";
+      td[5].textContent = r.pnl != null ? signed(r.pnl) : "―";
+      tb.appendChild(tr);
+    });
+
+    // ── 今月の発注
+    const plan = buildPlan(pf, v, n);
+    el("reb-sub").textContent = "評価額 " + yenc(v.total) + " ÷ " + n
+      + "銘柄 = 1銘柄あたり " + yenc(plan.per);
+
+    const buys = plan.orders.filter(o => o.kind === "buy");
+    const sells = plan.orders.filter(o => o.kind === "sell");
+    const keeps = plan.orders.filter(o => o.kind === "keep");
+    el("action").textContent = (buys.length || sells.length)
+      ? (sells.length ? sells.length + "件売って" : "") + (buys.length ? buys.length + "件買う" : "")
+      : "発注は不要。そのまま保有を継続。";
+    el("btn-exec").disabled = !(buys.length || sells.length);
+
+    const ob = el("orders"); ob.textContent = "";
+    const VERB = { sell: "売る", buy: "買う", keep: "継続", skip: "見送り" };
+    plan.orders.forEach(o => {
+      const d = document.createElement("div");
+      d.className = "order " + o.kind;
+      d.innerHTML = '<div class="verb"></div>' +
+        '<div class="who"><b></b><span></span></div>' +
+        '<div class="qty"><b></b><span></span></div>';
+      d.querySelector(".verb").textContent = VERB[o.kind];
+      d.querySelector(".who b").textContent = o.sym;
+      d.querySelector(".who span").textContent = nameOf(o.sym) + " · " + o.why;
+      d.querySelector(".qty b").textContent = o.shares
+        ? o.shares.toLocaleString("ja-JP") + "株" : "―";
+      d.querySelector(".qty span").textContent = o.amount != null ? yenc(o.amount) : "";
+      ob.appendChild(d);
+    });
+
+    // ── 警告
+    const al = el("reb-alerts"); al.textContent = "";
+    plan.orders.filter(o => o.kind === "skip").forEach(o => {
+      const d = document.createElement("div"); d.className = "warn";
+      d.innerHTML = "<b>" + o.sym + "（" + nameOf(o.sym) + "）は買えません。</b>" + o.why
+        + " 単元未満株が使えないなら、次順位に繰り下げてください。";
+      al.appendChild(d);
+    });
+    const cnt = {};
+    plan.top.forEach(s => { const k = bySym[s].sector; cnt[k] = (cnt[k] || 0) + 1; });
+    const worst = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0];
+    if (worst && worst[1] >= Math.ceil(n * 0.6)) {
+      const d = document.createElement("div"); d.className = "warn";
+      d.innerHTML = "<b>" + worst[1] + "銘柄が「" + worst[0] + "」に集中しています。</b>"
+        + "このルールはセクター分散を考慮しません。" + worst[0]
+        + "が崩れると同時に下落します。";
+      al.appendChild(d);
+    }
+
+    // ── 手動修正
+    const ed = el("edit-list"); ed.textContent = "";
+    Object.keys(pf.positions).forEach(sym => {
+      const row = document.createElement("div"); row.className = "edit-row";
+      const lab = document.createElement("span");
+      lab.textContent = sym + " " + nameOf(sym);
+      const inp = document.createElement("input");
+      inp.type = "number"; inp.min = "0"; inp.className = "narrow";
+      inp.value = pf.positions[sym].shares;
+      inp.dataset.sym = sym;
+      inp.setAttribute("aria-label", sym + " の株数");
+      row.appendChild(lab); row.appendChild(inp); ed.appendChild(row);
+    });
+    el("edit-cash").value = Math.round(pf.cash);
   }
 
-  el("btn-apply").onclick = () => {
-    saveHold(DATA.ranking.slice(0, cfg.topN).map(r => r.symbol));
-    render(); toast("保有を更新しました");
+  function ledgerRow(r, inside, owned) {
+    const d = document.createElement("div");
+    d.className = "lrow" + (inside ? " in" : "") + (owned ? " own" : "");
+    d.innerHTML = '<div class="rk">' + r.rank + '</div>' +
+      '<div class="who"><b></b><span></span></div>' +
+      '<div class="ret ' + (r.return_12m >= 0 ? "pos" : "neg") + '"></div>';
+    d.querySelector("b").textContent = r.symbol;
+    d.querySelector(".who span").textContent = r.name + " · " + r.sector
+      + (owned ? " · 保有中" : "");
+    d.querySelector(".ret").textContent = pct(r.return_12m);
+    return d;
+  }
+
+  /* ── 操作 ─────────────────────────────────────────────── */
+  el("btn-start").onclick = () => {
+    const amt = Number(el("init").value);
+    if (!(amt >= 100000)) { toast("10万円以上を入れてください"); return; }
+    savePf({ cash: amt, positions: {}, updated: null });
+    render(); toast("開始しました。発注内容を確認してください");
   };
-  el("btn-clear").onclick = () => {
-    localStorage.removeItem(KEY); render(); toast("保有を消しました");
+
+  el("btn-exec").onclick = () => {
+    const pf = loadPf(); if (!pf) return;
+    const v = valuate(pf);
+    const plan = buildPlan(pf, v, cfg.topN);
+    savePf(execute(pf, plan));
+    render(); toast("記録しました");
   };
-  el("cap").onchange = e => {
-    const v = Number(e.target.value);
-    if (v >= 100000) { cfg.capital = v; saveCfg(); render(); }
-    else { e.target.value = cfg.capital; toast("10万円以上を入れてください"); }
+
+  el("btn-reset").onclick = () => {
+    if (!confirm("保有の記録をすべて消して最初からやり直しますか？")) return;
+    localStorage.removeItem(PF_KEY); render(); toast("消しました");
+  };
+
+  el("btn-save-manual").onclick = () => {
+    const pf = loadPf(); if (!pf) return;
+    const cash = Number(el("edit-cash").value);
+    if (!(cash >= 0)) { toast("現金は0以上で入れてください"); return; }
+    pf.cash = cash;
+    el("edit-list").querySelectorAll("input").forEach(inp => {
+      const sym = inp.dataset.sym, q = Number(inp.value);
+      const p = pf.positions[sym]; if (!p) return;
+      if (!(q > 0)) { delete pf.positions[sym]; return; }
+      const unit = p.shares ? p.cost / p.shares : (priceOf(sym) || 0);
+      p.cost = unit * q;      // 取得単価を保ったまま株数を合わせる
+      p.shares = q;
+    });
+    pf.updated = new Date().toISOString().slice(0, 10);
+    savePf(pf); render(); toast("保存しました");
   };
 
   render();

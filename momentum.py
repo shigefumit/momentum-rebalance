@@ -49,7 +49,10 @@ HOLDINGS_FILE = Path(__file__).parent / "holdings.json"
 LOOKBACK_MONTHS = 12
 LOOKBACK_DAYS = LOOKBACK_MONTHS * 21
 DEFAULT_TOP = 5
-PRICE_DEPTH = 12   # 実勢価格を取得する上位件数（アプリで上位3〜10に切替できるように）
+
+# 実勢価格は全銘柄で取得する。
+# 保有株が順位を落ちても評価額を計算できるようにするため（上位だけでは足りない）。
+# 月1回の処理なので取得時間は許容範囲。ローカルは6時間キャッシュされる。
 
 # 銘柄の日本語名。判定結果を読む時に銘柄コードだけだと分かりにくいため。
 NAMES = {
@@ -194,46 +197,49 @@ def compute(top_n: int, capital: float, as_of_str: str | None = None) -> dict:
     top = list(ret.head(top_n).index)
 
     # ---- 実際の市場価格を取る（株数計算用）
-    print("  実勢価格を取得中 …")
+    print(f"  実勢価格を取得中（全{len(ret)}銘柄）…")
     fx = fetcher.get_usdjpy(as_of=as_of if as_of_str else None, period="max")
     rows = []
     per_pos = capital / top_n
     for rank, sym in enumerate(ret.index, 1):
+        market = "JP" if sym.endswith(".T") else "US"
+        lot = config.LOT_SIZE[market]
+        rate = 1.0 if market == "JP" else fx
+
+        try:
+            px = fetcher.get_prices(sym, period="max" if as_of_str else "1mo")
+            if as_of_str:
+                px = px.loc[:as_of]
+            price_local = float(px["Close"].iloc[-1])
+        except Exception:
+            price_local = float("nan")
+
         entry = {
             "rank": rank,
             "symbol": sym,
             "name": name_of(sym),
-            "return_12m": float(ret[sym]),
             "sector": sector_of(sym),
+            "return_12m": float(ret[sym]),
             "selected": sym in top,
+            "market": market,
+            "lot": lot,
         }
-        if rank <= max(PRICE_DEPTH, top_n):
-            market = "JP" if sym.endswith(".T") else "US"
-            try:
-                px = fetcher.get_prices(sym, period="max" if as_of_str else "1mo")
-                if as_of_str:
-                    px = px.loc[:as_of]
-                price_local = float(px["Close"].iloc[-1])
-            except Exception:
-                price_local = float("nan")
-            rate = 1.0 if market == "JP" else fx
-            lot = config.LOT_SIZE[market]
-            if not math.isnan(price_local) and price_local > 0:
-                price_jpy = price_local * rate
-                shares = int(math.floor((per_pos / price_jpy) / lot) * lot)
-                entry.update({
-                    "market": market,
-                    "price_local": price_local,
-                    "price_jpy": price_jpy,
-                    "lot": lot,
-                    "shares": shares,
-                    "cost_jpy": shares * price_jpy,
-                    "buildable": shares > 0,
-                    "min_cost_jpy": lot * price_jpy,
-                })
-            else:
-                entry.update({"market": market, "buildable": False,
-                              "price_local": None, "shares": 0})
+
+        if not math.isnan(price_local) and price_local > 0:
+            price_jpy = price_local * rate
+            shares = int(math.floor((per_pos / price_jpy) / lot) * lot)
+            entry.update({
+                "price_local": price_local,
+                "price_jpy": price_jpy,
+                "shares": shares,
+                "cost_jpy": shares * price_jpy,
+                "buildable": shares > 0,
+                "min_cost_jpy": lot * price_jpy,
+            })
+        else:
+            entry.update({"price_local": None, "price_jpy": None,
+                          "shares": 0, "buildable": False})
+
         rows.append(entry)
 
     held = load_holdings()
